@@ -1,5 +1,5 @@
-// le 3-4-2020 - 25-8-2020
-// Newton-Raphson method
+//le 3-4-2020 - 5-9-2020
+//Newton-Raphson method
 //Paine (1992) developed an algorithm for GVF profile computations (for prismatic
 //channels) using Manning formula of flow resistance. Newton-Raphson technique was
 //used for guaranteed convergence of the algorithm. Standard step functions f(Y) and f'(Y)

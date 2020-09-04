@@ -1,6 +1,6 @@
 #include <windows.h>
 
-IDI_ICON1	ICON	DISCARDABLE	"C:\\Users\\hafme\\Desktop\\2020_2021_Mint20_Win10\\For_Published_ver_1.8.9(29-8-2020)\\hydraulics-channel-gvf-master\\src\\icons\\hydraulics-channel-gvf.ico"
+IDI_ICON1	ICON	DISCARDABLE	"C:\\Users\\hafme\\Documents\\GitHub\\hydraulics_channel_gvf\\src\\icons\\hydraulics-channel-gvf.ico"
 
 VS_VERSION_INFO VERSIONINFO
 	FILEVERSION 1,9,0,0
