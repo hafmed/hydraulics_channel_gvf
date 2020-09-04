@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=hydraulics-channel-gvf
+Comment=Application for hydraulics channel gvf
+Exec=hydraulics-channel-gvf
+Icon=hydraulics-channel-gvf
+Categories=Education;Science;
+Terminal=false
+Name[en_US]=hydraulics-channel-gvf.desktop
+X-AppImage-Version=

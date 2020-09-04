@@ -1,0 +1,105 @@
+%--------- HAF 5-10-2015--------------------
+\documentclass[a4paper,thmohb,12pt,logo]{mohamed2}
+% si pas logo
+%\documentclass[twocolumn,letterpaper,thmohb,11pt]{mohamed2}
+%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{mohamed2}
+\usepackage[OT1]{fontenc}
+\usepackage[ansinew]{inputenc}
+\usepackage[french]{babel}
+\usepackage{pgfplots}
+\usepackage{tkz-fct}
+\usetikzlibrary{intersections}
+\usepackage{float}
+\usepackage{hyphenat}
+\usepackage{siunitx}
+\sisetup{per=slash}
+\usepackage{textcomp}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{multicol}
+\usepackage{lastpage}
+\usepackage{siunitx}
+\usepackage{listings}
+\usepackage{booktabs}
+\usepackage[tikz]{bclogo}
+\usepackage{pstricks}
+\usepackage[dvips,ps2pdf,frenchlinks=true,breaklinks=true]{hyperref}
+\hypersetup{pdfauthor={Mohamed HAFIANE},pdftitle={TP ; L3 Hydraulique},pdfsubject={Hydro-Informatique},pdfkeywords={LaTeX, PsTricks,Hyperref,...}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{listings}
+%%%%%%%%%%%%%%%%
+\input{map2}
+\input{HafMacros}
+\input{HAF-Hyphenation}
+\input{HAF-Langages}
+\graphicspath{{Images/}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\definecolor{HAF1}{RGB}{255,235,205} %pour Algorithme
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newlength{\len}
+\newlength{\plotwidth}
+\newlength{\plotheight}
+\newcommand{\getvalue}[1]{\pgfkeysvalueof{/pgfplots/#1}}
+
+%output will be given by \pgfmathresult
+\newcommand{\xcoord}[1]% #1 = node name
+{\pgfplotsextra{%
+		\pgfextractx{\len}{\pgfpointdiff{\pgfplotspointaxisxy{0}{0}}{\pgfpointanchor{#1}{center}}}%
+		\pgfextractx{\plotwidth}{\pgfpointdiff{\pgfplotspointaxisxy{\getvalue{xmin}}{0}}%
+			{\pgfplotspointaxisxy{\getvalue{xmax}}{0}}}%
+		\pgfmathparse{\len*(\getvalue{xmax}-\getvalue{xmin})/\plotwidth}%
+}}
+\newcommand{\ycoord}[1]% #1 = node name
+{\pgfplotsextra{%
+		\pgfextracty{\len}{\pgfpointdiff{\pgfplotspointaxisxy{0}{0}}{\pgfpointanchor{#1}{center}}}%
+		\pgfextracty{\plotheight}{\pgfpointdiff{\pgfplotspointaxisxy{0}{\getvalue{ymin}}}%
+			{\pgfplotspointaxisxy{0}{\getvalue{ymax}}}}%
+		\pgfmathparse{\len*(\getvalue{ymax}-\getvalue{ymin})/\plotheight}%
+}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[a4paper,textwidth=18cm,textheight=26.5cm,centering]{geometry}
+\usepackage[most]{tcolorbox}
+% some colors
+\definecolor{bistre}{rgb}{.75,.50,.30}
+\definecolor{Maroon}{rgb}{0.5,0.0,0.0}
+\definecolor{fondpaille}{cmyk}{0,0,0.1,0}
+\definecolor{HAF1}{RGB}{255,235,205}
+\definecolor{light-gray}{gray}{0.95}
+\usepackage{empheq}
+\usepackage{tcolorbox}
+\uselanguage{French}
+\languagepath{French}
+% put color to \boxed math command
+\newcommand*{\boxcolor}{red}
+\makeatletter
+\renewcommand{\boxed}[1]{\textcolor{\boxcolor}{%
+		\tikz[baseline={([yshift=-1ex]current bounding box.center)}] \node [rectangle, minimum width=1ex,rounded corners,draw,fill=HAF1,thick] {\normalcolor\m@th$\displaystyle#1$};}}
+\begin{document}
+	\universite{UNIVERSITÉ DE SAÏDA}
+	\institut{FACULTÉ DE TECHNOLOGIE \\
+		DÉPARTEMENT DE GÉNIE CIVIL ET D'HYDRAULIQUE}
+	\author{M.~\textsc{HAFIANE}}
+	\module{Méthodes numériques (S4, 2\ieme Année licence "Hydraulique \& Génie civil")} 
+	\exam{TD}
+	\theyear{2019-2020}
+	\date{}
+	\thetime{}
+	\title{}
+	\maketitle
+\vfill
+\begin{minipage}{0.75\textwidth}
+\textbf{\underline{Solution numérique}} :
+Toutes les méthodes utilisent la discrétisation de l'une des formes suivantes de l'équation GVF : ($ S_0 $ la pente du fond du canal et $ S_f $ la pente de la ligne de chage totale )
+\newtcolorbox{mymathbox}[1][]{colback=white, sharp corners, #1}
+\newtcbox{\othermathbox}[1][]{nobeforeafter, math upper, tcbox raise base, enhanced, sharp corners, colback=blue!10, colframe=red!30!black, 
+	drop fuzzy shadow, left=1em, top=1em, right=1em, bottom=1em}
+\begin{empheq}[box=\othermathbox]{align}
+	\frac{\mathrm{d}H}{\mathrm{d}x}&=-S_f&\hspace*{1.5cm}(\text{Charge totale : } H=z+y+\dfrac{v^2}{2g})\\
+\frac{\mathrm{d}E}{\mathrm{d}x}&=S_o-S_f&\hspace*{1.5cm}(\text{Energie spécifique : } E=y+\dfrac{v^2}{2g})\\
+\frac{\mathrm{d}y}{\mathrm{d}x}&=\dfrac{S_o-S_f}{1-\mathrm{Fr}^2}&\hspace*{1.5cm}(\text{Profondeur } y)
+\end{empheq} 
+\end{minipage}	
+
+\vfill
+\end{document}

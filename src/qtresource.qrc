@@ -1,0 +1,27 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/mildslope.png</file>
+        <file>icons/criticalslope.png</file>
+        <file>icons/steepslope.png</file>
+        <file>icons/M1.png</file>
+        <file>icons/A1A2A3.png</file>
+        <file>icons/H1H2.png</file>
+        <file>icons/H1H2H3.png</file>
+        <file>icons/M1M2M3.png</file>
+        <file>icons/M2.png</file>
+        <file>icons/M3.png</file>
+        <file>icons/S1.png</file>
+        <file>icons/S1S2S3.png</file>
+        <file>icons/S2.png</file>
+        <file>icons/S3.png</file>
+        <file>icons/adverseslope.png</file>
+        <file>icons/C1C3.png</file>
+        <file>icons/horizontalslope.png</file>
+        <file>icons/figeqtdiffEnergGVF.png</file>
+        <file>icons/figeqtdiffGVF.png</file>
+        <file>icons/figSfmoy1.png</file>
+        <file>icons/figSfmoy2.png</file>
+        <file>icons/hydraulics-channel-gvf.ico</file>
+        <file>icons/GVF-Eqts.png</file>
+    </qresource>
+</RCC>
