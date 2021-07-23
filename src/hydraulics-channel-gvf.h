@@ -43,6 +43,8 @@ public:
     QString resultatsfr0;
     QProgressDialog pd;
 
+    double ymaxgraphe=0;
+
 public slots:
 
     void SI_unite_HAF();

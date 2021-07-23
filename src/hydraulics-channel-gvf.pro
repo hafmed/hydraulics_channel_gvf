@@ -15,7 +15,7 @@
 
 QT       += core gui
 CONFIG += c++17
-VERSION = 1.9.0  #5-9-2020
+VERSION = 3.0.9  #21-9-2020 -25-7-2021
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
 QMAKE_CXXFLAGS += -std=c++17

@@ -162,6 +162,12 @@
                       <string>Méthodes numériques</string>
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_6">
+                      <property name="topMargin">
+                       <number>2</number>
+                      </property>
+                      <property name="bottomMargin">
+                       <number>2</number>
+                      </property>
                       <item>
                        <widget class="QRadioButton" name="radioButton_NR">
                         <property name="toolTip">
@@ -523,16 +529,16 @@
                           <number>7</number>
                          </property>
                          <property name="minimum">
-                          <double>0.000000000000000</double>
+                          <double>0.000001000000000</double>
                          </property>
                          <property name="maximum">
-                          <double>0.010000000000000</double>
+                          <double>0.100000000000000</double>
                          </property>
                          <property name="singleStep">
                           <double>0.000100000000000</double>
                          </property>
                          <property name="value">
-                          <double>0.000010000000000</double>
+                          <double>0.000100000000000</double>
                          </property>
                         </widget>
                        </item>

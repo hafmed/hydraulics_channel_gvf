@@ -18,7 +18,7 @@
 #include "hydraulics-channel-gvf.h"
 #include "ui_hydraulics-channel-gvf.h"
 #include <QDebug>
-#include <QDesktopWidget>
+//#include <QDesktopWidget>
 #include <QScreen>
 #include <QMessageBox>
 #include <QMetaEnum>
@@ -47,8 +47,8 @@ hydraulics_channel_gvf::hydraulics_channel_gvf(QWidget *parent) :
     ui(new Ui::hydraulics_channel_gvf)
 {
     ui->setupUi(this);
-    ui->statusBar->showMessage("HAFIANE Mohamed (2019-2020) ; Ver: " APP_VERSION " ; Linux&Windows ; email : haftemp@gmail.com"
-                                                                                 "        ;          Sens d'écoulement : --------->");
+    ui->statusBar->showMessage("HAFIANE Mohamed (2020-2021) ; Ver: " APP_VERSION " ; Linux&Windows ; email : haftemp@gmail.com ; https://sites.google.com/site/courshaf"
+          "        ;          Sens d'écoulement : --------->");
     setWindowTitle("Courbes de remous (résolution numérique et intégration directe)");
     //------------------------HAF 25-7-2020----------------------
     ui->doubleSpinBox_y1->setLocale(QLocale(QLocale::English, QLocale::UnitedStates));
@@ -225,7 +225,10 @@ void hydraulics_channel_gvf::calcul_HAF(){
         width = width + ui->tableWidget->columnWidth(column);
     ui->tableWidget->setMinimumWidth(width);
     ui->stackedWidget_plot_imageEqts->setCurrentIndex(0);
-    //---------------
+    //----HAF 22-9-2020-----------
+    ui->customPlot->yAxis->setRange(0, ymaxgraphe+0.15*fabs(ymaxgraphe));
+    ui->customPlot->replot();
+    //---------------------------
 }
 void hydraulics_channel_gvf::methode_Trap(){
 
@@ -343,7 +346,7 @@ void hydraulics_channel_gvf::methode_Trap(){
         ui->tableWidget->setItem(i,2,new QTableWidgetItem(tr("%1").arg(zz[i]+y2[i])));
     }
 
-    // Détermination Max et Mini de y2 et error_truncation
+    // Détermination Max et Mini de y2
     double highy,lowy;
     highy=y2[0];
     lowy=y2[0];
@@ -414,6 +417,30 @@ void hydraulics_channel_gvf::methode_Trap(){
         zynplot[i]=zcplot[i]+yn;
     }
 
+    //--HAF---22-9-2020---------------
+    double highzyplot;
+    highzyplot=zyplot[0];
+
+    for(int i = 1; i < numsteps; i++)
+    {
+        if(zyplot[i]>highzyplot){
+            highzyplot=zyplot[i];
+        }
+    }
+    if (zycplot[0]>highzyplot){
+        highzyplot=zycplot[0];
+    }
+    if (zycplot[numsteps]>highzyplot){
+        highzyplot=zycplot[numsteps];
+    }
+    if (zynplot[0]>highzyplot){
+        highzyplot=zynplot[0];
+    }
+    if (zynplot[numsteps]>highzyplot){
+        highzyplot=zynplot[numsteps];
+    }
+    ymaxgraphe=highzyplot;
+    //-------------------------------
     // plot
     ui->customPlot->clearGraphs();
 
@@ -671,7 +698,30 @@ void hydraulics_channel_gvf::methode_KM(){
         zycplot[i]=zcplot[i]+yc;
         zynplot[i]=zcplot[i]+yn;
     }
+    //--HAF---22-9-2020---------------
+    double highzyplot;
+    highzyplot=zyplot[0];
 
+    for(int i = 1; i < numsteps; i++)
+    {
+        if(zyplot[i]>highzyplot){
+            highzyplot=zyplot[i];
+        }
+    }
+    if (zycplot[0]>highzyplot){
+        highzyplot=zycplot[0];
+    }
+    if (zycplot[numsteps]>highzyplot){
+        highzyplot=zycplot[numsteps];
+    }
+    if (zynplot[0]>highzyplot){
+        highzyplot=zynplot[0];
+    }
+    if (zynplot[numsteps]>highzyplot){
+        highzyplot=zynplot[numsteps];
+    }
+    ymaxgraphe=highzyplot;
+    //-------------------------------
     // plot
     ui->customPlot->clearGraphs();
 
@@ -910,7 +960,30 @@ void hydraulics_channel_gvf::methode_RK4(){
         zycplot[i]=zcplot[i]+yc;
         zynplot[i]=zcplot[i]+yn;
     }
+    //--HAF---22-9-2020---------------
+    double highzyplot;
+    highzyplot=zyplot[0];
 
+    for(int i = 1; i < numsteps; i++)
+    {
+        if(zyplot[i]>highzyplot){
+            highzyplot=zyplot[i];
+        }
+    }
+    if (zycplot[0]>highzyplot){
+        highzyplot=zycplot[0];
+    }
+    if (zycplot[numsteps]>highzyplot){
+        highzyplot=zycplot[numsteps];
+    }
+    if (zynplot[0]>highzyplot){
+        highzyplot=zynplot[0];
+    }
+    if (zynplot[numsteps]>highzyplot){
+        highzyplot=zynplot[numsteps];
+    }
+    ymaxgraphe=highzyplot;
+    //-------------------------------
     // plot
     ui->customPlot->clearGraphs();
 
@@ -1140,7 +1213,30 @@ void hydraulics_channel_gvf::methode_Bresse()
 
         //cout<<"zcplot="<<zcplot[i]<<"\n";
     }
+    //--HAF---22-9-2020---------------
+    double highzyplot;
+    highzyplot=zyplot[0];
 
+    for(int i = 1; i <= npt; i++)
+    {
+        if(zyplot[i]>highzyplot){
+            highzyplot=zyplot[i];
+        }
+    }
+    if (zycplot[0]>highzyplot){
+        highzyplot=zycplot[0];
+    }
+    if (zycplot[npt]>highzyplot){
+        highzyplot=zycplot[npt];
+    }
+    if (zynplot[0]>highzyplot){
+        highzyplot=zynplot[0];
+    }
+    if (zynplot[npt]>highzyplot){
+        highzyplot=zynplot[npt];
+    }
+    ymaxgraphe=highzyplot;
+    //-------------------------------
     // plot
     ui->customPlot->clearGraphs();
 
@@ -1306,7 +1402,30 @@ void hydraulics_channel_gvf::methode_NR()
         zycplot[i]=zcplot[i]+yc;
         zynplot[i]=zcplot[i]+yn;
     }
+    //--HAF---22-9-2020---------------
+    double highzyplot;
+    highzyplot=zyplot[0];
 
+    for(int i = 1; i < numsteps; i++)
+    {
+        if(zyplot[i]>highzyplot){
+            highzyplot=zyplot[i];
+        }
+    }
+    if (zycplot[0]>highzyplot){
+        highzyplot=zycplot[0];
+    }
+    if (zycplot[numsteps]>highzyplot){
+        highzyplot=zycplot[numsteps];
+    }
+    if (zynplot[0]>highzyplot){
+        highzyplot=zynplot[0];
+    }
+    if (zynplot[numsteps]>highzyplot){
+        highzyplot=zynplot[numsteps];
+    }
+    ymaxgraphe=highzyplot;
+    //-------------------------------
     // plot
     ui->customPlot->clearGraphs();
 
@@ -1566,7 +1685,30 @@ void hydraulics_channel_gvf::methode_DirectStep(){
         zycplot[i]=zcplot[i]+yc;
         zynplot[i]=zcplot[i]+yn;
     }
+    //--HAF---22-9-2020---------------
+    double highzyplot;
+    highzyplot=zyplot[0];
 
+    for(int i = 1; i <= npt; i++)
+    {
+        if(zyplot[i]>highzyplot){
+            highzyplot=zyplot[i];
+        }
+    }
+    if (zycplot[0]>highzyplot){
+        highzyplot=zycplot[0];
+    }
+    if (zycplot[npt]>highzyplot){
+        highzyplot=zycplot[npt];
+    }
+    if (zynplot[0]>highzyplot){
+        highzyplot=zynplot[0];
+    }
+    if (zynplot[npt]>highzyplot){
+        highzyplot=zynplot[npt];
+    }
+    ymaxgraphe=highzyplot;
+    //-------------------------------
     // plot
     ui->customPlot->clearGraphs();
 
