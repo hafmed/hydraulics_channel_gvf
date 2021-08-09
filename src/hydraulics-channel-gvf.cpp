@@ -47,9 +47,20 @@ hydraulics_channel_gvf::hydraulics_channel_gvf(QWidget *parent) :
     ui(new Ui::hydraulics_channel_gvf)
 {
     ui->setupUi(this);
-    ui->statusBar->showMessage("HAFIANE Mohamed (2020-2021) ; Ver: " APP_VERSION " ; Linux&Windows ; email : haftemp@gmail.com ; https://sites.google.com/site/courshaf"
-          "        ;          Sens d'écoulement : --------->");
-    setWindowTitle("Courbes de remous (résolution numérique et intégration directe)");
+    ui->statusBar->showMessage("HAFIANE Mohamed (2020-2021) ; Ver: " APP_VERSION " ; Linux&Windows ; email : haftemp@gmail.com ; https://sites.google.com/site/courshaf"+
+                               tr("        ;          Sens d'écoulement : --------->"));
+    setWindowTitle(tr("Courbes de remous (résolution numérique et intégration directe)"));
+    //--------------------HAF 9-8-2021---------------------------
+    QPixmap fig_gvf_fr = QPixmap (":/icons/GVF-Eqts-Fr.png");
+    QPixmap fig_gvf_en = QPixmap (":/icons/GVF-Eqts-En.png");
+    QString locale = QString(QLocale::system().name()).left(2);
+    if (locale.length() < 2) locale = "en";
+    if (locale!="fr")
+    {
+        ui->label_figGVF->setPixmap(fig_gvf_en);
+    }else{
+        ui->label_figGVF->setPixmap(fig_gvf_fr);
+    }
     //------------------------HAF 25-7-2020----------------------
     ui->doubleSpinBox_y1->setLocale(QLocale(QLocale::English, QLocale::UnitedStates));
     ui->doubleSpinBox_y1->setGroupSeparatorShown(false);
@@ -82,7 +93,7 @@ hydraulics_channel_gvf::hydraulics_channel_gvf(QWidget *parent) :
     connect(ui->radioButton_AngloSaxon, SIGNAL(toggled(bool)), this, SLOT(SI_unite_HAF()));
     connect(ui->pushButton_copy_table_in_Clipboard, SIGNAL(clicked()), this, SLOT(copy_table_in_Clipboard()));
 
-    ui->radioButton_Bresse->setToolTip("Méthode de Bresse est pour un canal rectangulaire très large!");
+    ui->radioButton_Bresse->setToolTip(tr("Méthode de Bresse est pour un canal rectangulaire très large!"));
 
     connect(ui->spinBox_nbrePts, SIGNAL(valueChanged(int)), this, SLOT(remplire_Colonne_Yinpt(int)));
     connect(ui->doubleSpinBox_y1, SIGNAL(valueChanged(double)), this, SLOT(remplire_Colonne_Yy1(double)));
@@ -99,8 +110,8 @@ hydraulics_channel_gvf::hydraulics_channel_gvf(QWidget *parent) :
 
     //pd.setWindowModality(Qt::WindowModal);
     pd.setWindowModality(Qt::ApplicationModal);
-    pd.setLabelText("Calcul en cours, Veuillez patienter!");
-    pd.setCancelButtonText("Annuler");
+    pd.setLabelText(tr("Calcul en cours, Veuillez patienter!"));
+    pd.setCancelButtonText(tr("Annuler"));
     pd.setFocus();
     pd.setAutoReset(true);
     pd.setEnabled(true);
@@ -199,14 +210,13 @@ void hydraulics_channel_gvf::calcul_HAF(){
     if(ui->comboBox_methode_calcul->currentIndex()==1){
         if(ui->doubleSpinBox_S0->value()<=0 && ui->radioButton_Bresse->isChecked()){
             pd.close();
-            QMessageBox::critical(this, "Erreur",
-                                  "La méthode de Bresse ne peut être utilisée que pour une pente de fond du canal So>0.");
+            QMessageBox::critical(this,tr("Erreur"),
+                                  tr("La méthode de Bresse ne peut être utilisée que pour une pente de fond du canal So>0."));
             return ;
         }
         if (ui->radioButton_Bresse->isChecked()){ methode_Bresse();}
         if (ui->radioButton_DirectStep->isChecked()){ methode_DirectStep();}
     }
-
     ///---mettre à la fin tjrs
     if(ui->doubleSpinBox_S0->value()<=0){
         ui->lineEdit_yn->hide();
@@ -251,8 +261,8 @@ void hydraulics_channel_gvf::methode_Trap(){
 
     if (abs(totaldist/stepdist) > 1000000 ){
         pd.close();
-        QMessageBox::critical(this, "Erreur",
-                              "Impossible de continuer, vous avez dépasser le nombre max de points de calcul (1000000), diminuer la longueur du canal ou augmenter dx!");
+        QMessageBox::critical(this,tr("Erreur"),
+                              tr("Impossible de continuer, vous avez dépasser le nombre max de points de calcul (1000000), diminuer la longueur du canal ou augmenter dx!"));
         //cout<< "totaldist/stepdist ="<<abs(totaldist/stepdist) << endl;
         return ;
     }
@@ -329,12 +339,13 @@ void hydraulics_channel_gvf::methode_Trap(){
         if (isnan(y2[i]) || y2[i]<0 || (y2[i-1]<yc && y2[i]>yc)){ // la 3eme condition : pour eviter que la surface libre coupe yc (en S1, M3,...)
             //y2[i]=nan("");
             pd.close();
-            QMessageBox::critical(this, "Erreur",
-                                  "Impossible de continuer le calcul, possible l'écoulement devient rapidement varié (ceci une fois le profile de "
+            QMessageBox::critical(this, tr("Erreur"),
+                                  tr("Impossible de continuer le calcul, possible l'écoulement devient rapidement varié (ceci une fois le profile de "
                                   "la surface libre -S1, M3, A3,...- coupe la hauteur critique).\n"
                                   "Solutions possibles : diminuer la longueur du canal ou rectifier y0!\n"
-                                  "Peut-être aussi c'est un problème de convergence, essayer de diminuer dx!"
-                                  "\nInformation utile! : l'erreur c'est produite à : x="+QString::number(xx[i])+" (y2="+QString::number(y2[i])+").");
+                                  "Peut-être aussi c'est un problème de convergence, essayer de diminuer dx!")+
+                                  tr("\nInformation utile! : l'erreur c'est produite à : x=")+QString::number(xx[i])+
+                                  " (y2="+QString::number(y2[i])+").");
             break;
         }
         resultatsfr0=resultatsfr0+QString::number(i)+"\t"+QString::number(xx[i])+
@@ -478,9 +489,9 @@ void hydraulics_channel_gvf::methode_Trap(){
     ui->customPlot->graph(1)->setData(xplot, zcplot);
     ui->customPlot->graph(1)->removeFromLegend();
     ui->customPlot->graph(2)->setData(xplot, zycplot);
-    ui->customPlot->graph(2)->setName("y critique");
+    ui->customPlot->graph(2)->setName(tr("y critique"));
     ui->customPlot->graph(3)->setData(xplot, zynplot);
-    ui->customPlot->graph(3)->setName("y normale");
+    ui->customPlot->graph(3)->setName(tr("y normale"));
     ui->customPlot->graph(0)->rescaleAxes();
     ui->customPlot->graph(1)->rescaleAxes(true);
     ui->customPlot->graph(2)->rescaleAxes(true);
@@ -488,7 +499,7 @@ void hydraulics_channel_gvf::methode_Trap(){
 
     ui->customPlot->legend->setVisible(true);
 
-    ui->customPlot->yAxis->setLabel("Elévation ("+ui->label_unite_y0->text()+")");
+    ui->customPlot->yAxis->setLabel(tr("Elévation (")+ui->label_unite_y0->text()+")");
     ui->customPlot->xAxis->setLabel("x ("+ui->label_unite_y0->text()+")");
 
     ui->customPlot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
@@ -496,7 +507,7 @@ void hydraulics_channel_gvf::methode_Trap(){
     if(ui->doubleSpinBox_S0->value()<=0 ){
         ui->customPlot->graph(3)->removeFromLegend();
     }else{
-        ui->customPlot->graph(3)->setName("y normale");
+        ui->customPlot->graph(3)->setName(tr("y normale"));
     }
     ui->customPlot->replot();
 }
@@ -521,8 +532,8 @@ void hydraulics_channel_gvf::methode_KM(){
 
     if (abs(totaldist/stepdist) > 1000000 ){
         pd.close();
-        QMessageBox::critical(this, "Erreur",
-                              "Impossible de continuer, vous avez dépasser le nombre max de points de calcul (1000000), diminuer la longueur du canal ou augmenter dx!");
+        QMessageBox::critical(this, tr("Erreur"),
+                              tr("Impossible de continuer, vous avez dépasser le nombre max de points de calcul (1000000), diminuer la longueur du canal ou augmenter dx!"));
         //cout<< "totaldist/stepdist ="<<abs(totaldist/stepdist) << endl;
         return ;
     }
@@ -592,12 +603,12 @@ void hydraulics_channel_gvf::methode_KM(){
         if (isnan(y2[i]) || y2[i]<0 || (y2[i-1]<yc && y2[i]>yc)){ // la 3eme condition : pour eviter que la surface libre coupe yc (en S1, M3,...)
             y2[i]=nan("");
             pd.close();
-            QMessageBox::critical(this, "Erreur",
-                                  "Impossible de continuer le calcul, possible l'écoulement devient rapidement varié (ceci une fois le profile de "
+            QMessageBox::critical(this, tr("Erreur"),
+                                  tr("Impossible de continuer le calcul, possible l'écoulement devient rapidement varié (ceci une fois le profile de "
                                   "la surface libre -S1, M3, A3,...- coupe la hauteur critique).\n"
                                   "Solutions possibles : diminuer la longueur du canal ou rectifier y0!\n"
-                                  "Peut-être aussi c'est un problème de convergence, essayer de diminuer dx!"
-                                  "\nInformation utile! : l'erreur c'est produite à : x="+QString::number(xx[i])+" (y2="+QString::number(y2[i])+").");
+                                  "Peut-être aussi c'est un problème de convergence, essayer de diminuer dx!")+
+                                  tr("\nInformation utile! : l'erreur c'est produite à : x=")+QString::number(xx[i])+" (y2="+QString::number(y2[i])+").");
             break;
         }
         resultatsfr0=resultatsfr0+QString::number(i)+"\t"+QString::number(xx[i])+
@@ -759,9 +770,9 @@ void hydraulics_channel_gvf::methode_KM(){
     ui->customPlot->graph(1)->setData(xplot, zcplot);
     ui->customPlot->graph(1)->removeFromLegend();
     ui->customPlot->graph(2)->setData(xplot, zycplot);
-    ui->customPlot->graph(2)->setName("y critique");
+    ui->customPlot->graph(2)->setName(tr("y critique"));
     ui->customPlot->graph(3)->setData(xplot, zynplot);
-    ui->customPlot->graph(3)->setName("y normale");
+    ui->customPlot->graph(3)->setName(tr("y normale"));
     ui->customPlot->graph(0)->rescaleAxes();
     ui->customPlot->graph(1)->rescaleAxes(true);
     ui->customPlot->graph(2)->rescaleAxes(true);
@@ -769,7 +780,7 @@ void hydraulics_channel_gvf::methode_KM(){
 
     ui->customPlot->legend->setVisible(true);
 
-    ui->customPlot->yAxis->setLabel("Elévation ("+ui->label_unite_y0->text()+")");
+    ui->customPlot->yAxis->setLabel(tr("Elévation (")+ui->label_unite_y0->text()+")");
     ui->customPlot->xAxis->setLabel("x ("+ui->label_unite_y0->text()+")");
 
     ui->customPlot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
@@ -777,7 +788,7 @@ void hydraulics_channel_gvf::methode_KM(){
     if(ui->doubleSpinBox_S0->value()<=0 ){
         ui->customPlot->graph(3)->removeFromLegend();
     }else{
-        ui->customPlot->graph(3)->setName("y normale");
+        ui->customPlot->graph(3)->setName(tr("y normale"));
     }
     ui->customPlot->replot();
 }
@@ -802,8 +813,8 @@ void hydraulics_channel_gvf::methode_RK4(){
 
     if (abs(totaldist/stepdist) > 1000000 ){
         pd.close();
-        QMessageBox::critical(this, "Erreur",
-                              "Impossible de continuer, vous avez dépasser le nombre max de points de calcul (1000000), diminuer la longueur du canal ou augmenter dx!");
+        QMessageBox::critical(this, tr("Erreur"),
+                              tr("Impossible de continuer, vous avez dépasser le nombre max de points de calcul (1000000), diminuer la longueur du canal ou augmenter dx!"));
         //cout<< "totaldist/stepdist ="<<abs(totaldist/stepdist) << endl;
         return ;
     }
@@ -867,28 +878,22 @@ void hydraulics_channel_gvf::methode_RK4(){
         if (isnan(y2[i]) || y2[i]<0 || (y2[i-1]<yc && y2[i]>yc)){ // la 3eme condition : pour eviter que la surface libre coupe yc (en S1, M3,...)
             y2[i]=nan("");
             pd.close();
-            QMessageBox::critical(this, "Erreur",
-                                  "Impossible de continuer le calcul, possible l'écoulement devient rapidement varié (ceci une fois le profile de "
+            QMessageBox::critical(this, tr("Erreur"),
+                                  tr("Impossible de continuer le calcul, possible l'écoulement devient rapidement varié (ceci une fois le profile de "
                                   "la surface libre -S1, M3, A3,...- coupe la hauteur critique).\n"
                                   "Solutions possibles : diminuer la longueur du canal ou rectifier y0!\n"
-                                  "Peut-être aussi c'est un problème de convergence, essayer de diminuer dx!"
-                                  "\nInformation utile! : l'erreur c'est produite à : x="+QString::number(xx[i])+" (y2="+QString::number(y2[i])+").");
+                                  "Peut-être aussi c'est un problème de convergence, essayer de diminuer dx!")+
+                                  tr("\nInformation utile! : l'erreur c'est produite à : x=")+QString::number(xx[i])+" (y2="+QString::number(y2[i])+").");
             break;
         }
         resultatsfr0=resultatsfr0+QString::number(i)+"\t"+QString::number(xx[i])+
                 "\t"+QString::number(y2[i])+
                 "\t"+QString::number(zz[i]+y2[i])+"\n";
         //cout<< "y2["<<i<<"]="<<y2[i]<< endl;
-
         ui->tableWidget->setItem(i,0,new QTableWidgetItem(tr("%1").arg(xx[i])));
         ui->tableWidget->setItem(i,1,new QTableWidgetItem(tr("%1").arg(y2[i])));
         ui->tableWidget->setItem(i,2,new QTableWidgetItem(tr("%1").arg(zz[i]+y2[i])));
-
-
     }
-
-    ///-----
-
     // Détermination Max et Mini de y2
     double highy,lowy;
     highy=y2[0];
@@ -1021,9 +1026,9 @@ void hydraulics_channel_gvf::methode_RK4(){
     ui->customPlot->graph(1)->setData(xplot, zcplot);
     ui->customPlot->graph(1)->removeFromLegend();
     ui->customPlot->graph(2)->setData(xplot, zycplot);
-    ui->customPlot->graph(2)->setName("y critique");
+    ui->customPlot->graph(2)->setName(tr("y critique"));
     ui->customPlot->graph(3)->setData(xplot, zynplot);
-    ui->customPlot->graph(3)->setName("y normale");
+    ui->customPlot->graph(3)->setName(tr("y normale"));
     ui->customPlot->graph(0)->rescaleAxes();
     ui->customPlot->graph(1)->rescaleAxes(true);
     ui->customPlot->graph(2)->rescaleAxes(true);
@@ -1031,7 +1036,7 @@ void hydraulics_channel_gvf::methode_RK4(){
 
     ui->customPlot->legend->setVisible(true);
 
-    ui->customPlot->yAxis->setLabel("Elévation ("+ui->label_unite_y0->text()+")");
+    ui->customPlot->yAxis->setLabel(tr("Elévation (")+ui->label_unite_y0->text()+")");
     ui->customPlot->xAxis->setLabel("x ("+ui->label_unite_y0->text()+")");
 
     ui->customPlot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
@@ -1039,7 +1044,7 @@ void hydraulics_channel_gvf::methode_RK4(){
     if(ui->doubleSpinBox_S0->value()<=0 ){
         ui->customPlot->graph(3)->removeFromLegend();
     }else{
-        ui->customPlot->graph(3)->setName("y normale");
+        ui->customPlot->graph(3)->setName(tr("y normale"));
     }
     ui->customPlot->replot();
 }
@@ -1120,8 +1125,8 @@ void hydraulics_channel_gvf::methode_Bresse()
 
     if ((y[0]<=yc && y[npt]>=yc) || (y[npt]<=yc && y[0]>=yc)  || (y[0]<=yn && y[npt]>=yn) || (y[npt]<=yn && y[0]>=yn)){
         pd.close();
-        QMessageBox::critical(this, "Erreur",
-                              "Impossible de continuer, y1 et y2 sont de part et d'autre de yc ou yn!");
+        QMessageBox::critical(this, tr("Erreur"),
+                              tr("Impossible de continuer, y1 et y2 sont de part et d'autre de yc ou yn!"));
         ui->tableWidget->clearContents();
         return;
     }
@@ -1273,9 +1278,9 @@ void hydraulics_channel_gvf::methode_Bresse()
     ui->customPlot->graph(1)->setData(xplot, zcplot);
     ui->customPlot->graph(1)->removeFromLegend();
     ui->customPlot->graph(2)->setData(xplot, zycplot);
-    ui->customPlot->graph(2)->setName("y critique");
+    ui->customPlot->graph(2)->setName(tr("y critique"));
     ui->customPlot->graph(3)->setData(xplot, zynplot);
-    ui->customPlot->graph(3)->setName("y normale");
+    ui->customPlot->graph(3)->setName(tr("y normale"));
     ui->customPlot->graph(0)->rescaleAxes();
     ui->customPlot->graph(1)->rescaleAxes(true);
     ui->customPlot->graph(2)->rescaleAxes(true);
@@ -1310,8 +1315,8 @@ void hydraulics_channel_gvf::methode_NR()
 
     if (abs(totaldist/stepdist) > 1000000 ){
         pd.close();
-        QMessageBox::critical(this, "Erreur",
-                              "Impossible de continuer, vous avez dépasser le nombre max de points de calcul (1000000), diminuer la longueur du canal ou augmenter dx!");
+        QMessageBox::critical(this, tr("Erreur"),
+                              tr("Impossible de continuer, vous avez dépasser le nombre max de points de calcul (1000000), diminuer la longueur du canal ou augmenter dx!"));
         //cout<< "totaldist/stepdist ="<<abs(totaldist/stepdist) << endl;
         return ;
     }
@@ -1463,9 +1468,9 @@ void hydraulics_channel_gvf::methode_NR()
     ui->customPlot->graph(1)->setData(xplot, zcplot);
     ui->customPlot->graph(1)->removeFromLegend();
     ui->customPlot->graph(2)->setData(xplot, zycplot);
-    ui->customPlot->graph(2)->setName("y critique");
+    ui->customPlot->graph(2)->setName(tr("y critique"));
     ui->customPlot->graph(3)->setData(xplot, zynplot);
-    ui->customPlot->graph(3)->setName("y normale");
+    ui->customPlot->graph(3)->setName(tr("y normale"));
     ui->customPlot->graph(0)->rescaleAxes();
     ui->customPlot->graph(1)->rescaleAxes(true);
     ui->customPlot->graph(2)->rescaleAxes(true);
@@ -1473,7 +1478,7 @@ void hydraulics_channel_gvf::methode_NR()
 
     ui->customPlot->legend->setVisible(true);
 
-    ui->customPlot->yAxis->setLabel("Elévation ("+ui->label_unite_y0->text()+")");
+    ui->customPlot->yAxis->setLabel(tr("Elévation (")+ui->label_unite_y0->text()+")");
     ui->customPlot->xAxis->setLabel("x ("+ui->label_unite_y0->text()+")");
 
     ui->customPlot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
@@ -1481,7 +1486,7 @@ void hydraulics_channel_gvf::methode_NR()
     if(ui->doubleSpinBox_S0->value()<=0 ){
         ui->customPlot->graph(3)->removeFromLegend();
     }else{
-        ui->customPlot->graph(3)->setName("y normale");
+        ui->customPlot->graph(3)->setName(tr("y normale"));
     }
     ui->customPlot->replot();
 }
@@ -1550,8 +1555,8 @@ void hydraulics_channel_gvf::methode_DirectStep(){
 
     if ((y[0]<=yc && y[npt]>=yc) || (y[npt]<=yc && y[0]>=yc)  || (y[0]<=yn && y[npt]>=yn) || (y[npt]<=yn && y[0]>=yn)){
         pd.close();
-        QMessageBox::critical(this, "Erreur",
-                              "Impossible de continuer, y1 et y2 sont de part et d'autre de yc ou yn!");
+        QMessageBox::critical(this, tr("Erreur"),
+                              tr("Impossible de continuer, y1 et y2 sont de part et d'autre de yc ou yn!"));
         ui->tableWidget->clearContents();
         return;
     }
@@ -1745,9 +1750,9 @@ void hydraulics_channel_gvf::methode_DirectStep(){
     ui->customPlot->graph(1)->setData(xplot, zcplot);
     ui->customPlot->graph(1)->removeFromLegend();
     ui->customPlot->graph(2)->setData(xplot, zycplot);
-    ui->customPlot->graph(2)->setName("y critique");
+    ui->customPlot->graph(2)->setName(tr("y critique"));
     ui->customPlot->graph(3)->setData(xplot, zynplot);
-    ui->customPlot->graph(3)->setName("y normale");
+    ui->customPlot->graph(3)->setName(tr("y normale"));
     ui->customPlot->graph(0)->rescaleAxes();
     ui->customPlot->graph(1)->rescaleAxes(true);
     ui->customPlot->graph(2)->rescaleAxes(true);
@@ -1755,7 +1760,7 @@ void hydraulics_channel_gvf::methode_DirectStep(){
 
     ui->customPlot->legend->setVisible(true);
 
-    ui->customPlot->yAxis->setLabel("Elévation ("+ui->label_unite_y0->text()+")");
+    ui->customPlot->yAxis->setLabel(tr("Elévation (")+ui->label_unite_y0->text()+")");
     ui->customPlot->xAxis->setLabel("x ("+ui->label_unite_y0->text()+")");
 
     ui->customPlot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
@@ -1902,14 +1907,14 @@ void hydraulics_channel_gvf::afficher_information(double yc,double yn,
     if (yn<yc){
         resultatsfr1= "\nYc="+QString::number(yc);
         if (profiletype=="H2"||profiletype=="H3"){
-            resultatsfr2= "-------Yn=Infinie (Canal horizontal)";
+            resultatsfr2= tr("-------Yn=Infinie (Canal horizontal)");
         }else{
             resultatsfr2= "-------Yn="+QString::number(yn);
         }
     }else{
         resultatsfr2= "-------Yc="+QString::number(yc);
         if (profiletype=="H2"||profiletype=="H3"){
-            resultatsfr1= "\nYn=Infinie (Canal horizontal)";
+            resultatsfr1= tr("\nYn=Infinie (Canal horizontal)");
         }else{
             resultatsfr1= "\nYn="+QString::number(yn);
         }
@@ -1918,7 +1923,7 @@ void hydraulics_channel_gvf::afficher_information(double yc,double yn,
 
     QString resultatsfr3= "\nlowy="+QString::number(lowy)+"-------highy="+QString::number(highy);
 
-    QString resultatsfr5="\nType de profile : "+profiletype;
+    QString resultatsfr5=tr("\nType de profile : ")+profiletype;
 
     QString resultatsfr6="";
 
@@ -1931,7 +1936,7 @@ void hydraulics_channel_gvf::afficher_information(double yc,double yn,
 
     ui->textBrowser_resultats->setText(resultatsfr1+resultatsfr2+resultatsfr3+resultatsfr5+resultatsfr6);
 
-    ui->label_Type_CR->setText("Courbe de remous (type "+profiletype+")");
+    ui->label_Type_CR->setText(tr("Courbe de remous (type ")+profiletype+")");
 }
 ///---------
 double hydraulics_channel_gvf::fonctiondydx_for_RK4(double y,double B,double SS,double Q,double n,double Cm,double So,double g){
@@ -2052,12 +2057,12 @@ double* hydraulics_channel_gvf::loop_step_haf(double So, double n, double Q, dou
         if (isnan(y2[i]) || y2[i]<0 || (y2[i-1]<yc && y2[i]>yc)){ // la 3eme condition : pour eviter que la surface libre coupe yc (en S1, M3,...)
             y2[i]=nan("");
             pd.close();
-            QMessageBox::critical(this, "Erreur",
-                                  "Impossible de continuer le calcul, possible l'écoulement devient rapidement varié (ceci une fois le profile de "
+            QMessageBox::critical(this, tr("Erreur"),
+                                  tr("Impossible de continuer le calcul, possible l'écoulement devient rapidement varié (ceci une fois le profile de "
                                   "la surface libre -S1, M3, A3,...- coupe la hauteur critique).\n"
                                   "Solutions possibles : diminuer la longueur du canal ou rectifier y0!\n"
-                                  "Peut-être aussi c'est un problème de convergence, essayer de diminuer dx!"
-                                  "\nInformation utile! : l'erreur c'est produite à : x="+QString::number(xx[i])+" (y2="+QString::number(y2[i])+").");
+                                  "Peut-être aussi c'est un problème de convergence, essayer de diminuer dx!")+
+                                  tr("\nInformation utile! : l'erreur c'est produite à : x=")+QString::number(xx[i])+" (y2="+QString::number(y2[i])+").");
             break;
         }
         resultatsfr0=resultatsfr0+QString::number(i)+"\t"+QString::number(xx[i])+

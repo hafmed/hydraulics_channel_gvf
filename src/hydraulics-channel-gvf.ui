@@ -171,7 +171,7 @@
                       <item>
                        <widget class="QRadioButton" name="radioButton_NR">
                         <property name="toolTip">
-                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Se base sur la balance de l'énergie spécifique $ E=y+\dfrac{V^2}{2g} $&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                         <string>Se base sur le bilan de l'énergie spécifique : E=y+(V^2)/(2g)</string>
                         </property>
                         <property name="toolTipDuration">
                          <number>-1</number>
@@ -368,7 +368,7 @@
                    <item>
                     <widget class="QLabel" name="label_11">
                      <property name="text">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;La méthode de Bresse est une méthode d'intégration directe valable uniquement pour un canal &lt;span style=&quot; font-weight:600;&quot;&gt;rectangulaire de section très large&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                      <string>La méthode de Bresse est une méthode d'intégration directe valable uniquement pour un canal rectangulaire de section très large.</string>
                      </property>
                      <property name="textFormat">
                       <enum>Qt::RichText</enum>
@@ -1553,7 +1553,7 @@
       <widget class="QWidget" name="page_10">
        <layout class="QVBoxLayout" name="verticalLayout_13">
         <item>
-         <widget class="QLabel" name="label_6">
+         <widget class="QLabel" name="label_figGVF">
           <property name="minimumSize">
            <size>
             <width>0</width>

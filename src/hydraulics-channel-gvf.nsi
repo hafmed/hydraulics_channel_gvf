@@ -1,10 +1,10 @@
 Name "hydraulics-channel-gvf HAFIANE Mohamed"
-OutFile "hydraulics-channel-gvf_win64_install_3.0.9.exe"
+OutFile "hydraulics-channel-gvf_win64_install_3.0.15.exe"
 
 Icon "hydraulics-channel-gvf.ico"
 UninstallIcon "hydraulics-channel-gvf.ico"
 
-DirText "Uninstall previous version if exist and Choose directory for installing of Simulation of Gradually Varied Flow in Channel (hydraulics-channel-gvf) Ver 3.0.9 ; 25-7-2021"
+DirText "Uninstall previous version if exist and Choose directory for installing of Simulation of Gradually Varied Flow in Channel (hydraulics-channel-gvf) Ver 3.0.15 ; 9-8-2021"
 
 InstallDir "$PROGRAMFILES\hydraulics-channel-gvf"
 

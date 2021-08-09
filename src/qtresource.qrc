@@ -22,6 +22,7 @@
         <file>icons/figSfmoy1.png</file>
         <file>icons/figSfmoy2.png</file>
         <file>icons/hydraulics-channel-gvf.ico</file>
-        <file>icons/GVF-Eqts.png</file>
+        <file>icons/GVF-Eqts-En.png</file>
+        <file>icons/GVF-Eqts-Fr.png</file>
     </qresource>
 </RCC>

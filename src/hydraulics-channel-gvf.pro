@@ -15,7 +15,7 @@
 
 QT       += core gui
 CONFIG += c++17
-VERSION = 3.0.9  #21-9-2020 -25-7-2021
+VERSION = 3.0.15  #21-9-2020 -25-7-2021 -9-8-2021
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
 QMAKE_CXXFLAGS += -std=c++17
@@ -34,8 +34,11 @@ HEADERS  += hydraulics-channel-gvf.h \
 
 FORMS    += hydraulics-channel-gvf.ui
 
+TRANSLATIONS = translations/qt_en.ts
+
 RESOURCES += \
-    qtresource.qrc
+    qtresource.qrc \
+    translations.qrc
 
 win32:RC_ICONS += icons\hydraulics-channel-gvf.ico
 
