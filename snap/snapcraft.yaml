@@ -1,0 +1,32 @@
+name: hydraulics-channel-gvf
+version: 1.0.1
+summary: Qt Application for Hydraulic science.
+description: |
+    Application that calculate water-surface elevation
+    in prismatic channel with gradually varied flow.
+base: core18
+#icon: ../src/icons/icon.png
+confinement: strict
+grade: stable
+
+apps:
+  qthello:
+    command: desktop-launch $SNAP/opt/myapp/qtapp
+    plugs: [home, unity7, x11]
+
+parts:
+  project:
+    plugin: qmake
+    source: .
+    qt-version: qt5
+    project-files: [hydraulics-channel-gvf.pro]
+    install: |
+      install -d $SNAPCRAFT_PART_INSTALL/opt/myapp
+      install hydraulics-channel-gvf $SNAPCRAFT_PART_INSTALL/opt/myapp/hydraulics-channel-gvf
+  integration:
+    plugin: nil
+    stage-packages:
+     - libc6
+     - libstdc++6
+     - libc-bin
+    after: [desktop-qt5]
